@@ -1,0 +1,73 @@
+/* =========================================================
+   ResaChev – Feuille de style principale
+   Importée dans : resources/views/layouts/app.blade.php
+   ========================================================= */
+
+/* Votre CSS ici */
+
+/* ---------------------------------------------------------
+   Grille de créneaux (resources/views/espace/dashboard.blade.php)
+   --------------------------------------------------------- */
+
+.calendrier-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.semaine-label {
+    min-width: 220px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.grille-wrapper {
+    overflow-x: auto;
+}
+
+.grille {
+    display: grid;
+    gap: 3px;
+    min-width: 640px;
+}
+
+.grille-entete {
+    text-align: center;
+    font-size: .76rem;
+    font-weight: 700;
+    padding: 6px 2px;
+    text-transform: capitalize;
+}
+
+.grille-heure {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    font-size: .78rem;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.creneau {
+    border-radius: 5px;
+    padding: 5px 4px;
+    font-size: .72rem;
+    line-height: 1.25;
+    text-align: center;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+}
+
+.creneau-libre          { background-color: #d1e7dd; color: #0a3622; }
+.creneau-occupe         { background-color: #e9ecef; color: #6c757d; }
+.creneau-ma_reservation { background-color: #0d6efd; color: #fff; }
+.creneau-valide         { background-color: #198754; color: #fff; }
+
+.creneau .c-heure { font-weight: 700; font-size: .78rem; }
+.creneau .c-label { font-size: .68rem; opacity: .85; }

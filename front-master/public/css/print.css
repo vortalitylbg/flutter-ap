@@ -1,0 +1,131 @@
+/* =========================================================
+   ResaChev – Feuille de style billet QR Code
+   Importée dans : resources/views/espace/qrcode.blade.php
+   ========================================================= */
+
+/* --- Mise en page de la page --- */
+.billet-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 2rem;
+}
+
+/* --- Billet --- */
+.billet {
+    width: 340px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+
+.billet-header {
+    background: #212529;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0.75rem;
+}
+
+.billet-header .marque {
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.billet-header .sous-titre {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 2px;
+}
+
+.billet-body {
+    padding: 1.25rem 1rem;
+    text-align: center;
+}
+
+.billet-prestation {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.billet-client {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.billet-date {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0.5rem 0 2px;
+}
+
+.billet-heure {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.billet-separateur {
+    border: none;
+    border-top: 1px dashed #adb5bd;
+    margin: 0.75rem 0;
+}
+
+.billet-qr {
+    display: flex;
+    justify-content: center;
+    margin: 0.5rem 0;
+}
+
+.billet-footer {
+    font-size: 0.7rem;
+    color: #adb5bd;
+    text-align: center;
+    padding-bottom: 0.75rem;
+}
+
+/* --- Impression --- */
+@media print {
+    nav, footer, .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: #fff !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    main {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .billet-wrapper {
+        padding-top: 1cm;
+    }
+
+    .billet {
+        width: 9cm;
+        border: 2px solid #000;
+        box-shadow: none;
+    }
+
+    .billet-header {
+        background: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .billet-qr img,
+    .billet-qr canvas {
+        width: 4cm !important;
+        height: 4cm !important;
+    }
+
+    .billet-footer {
+        color: #777;
+    }
+}

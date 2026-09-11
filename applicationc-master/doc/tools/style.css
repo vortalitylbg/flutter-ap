@@ -1,0 +1,72 @@
+@page {
+  size: A4; margin: 24mm 18mm 22mm 18mm;
+  @top-left { content: "ResaChev - Application de gestion"; font: 8.5pt "Inter", "Segoe UI", Arial, sans-serif; color: #6b6b72; vertical-align: bottom; padding-bottom: 4pt; border-bottom: .6pt solid #c8c8ce; }
+  @top-right { content: "Spécifications fonctionnelles et techniques"; font: 8.5pt "Inter", "Segoe UI", Arial, sans-serif; color: #6b6b72; vertical-align: bottom; padding-bottom: 4pt; border-bottom: .6pt solid #c8c8ce; }
+  @bottom-left { content: "Version 1.0"; font: 8.5pt "Inter", "Segoe UI", Arial, sans-serif; color: #6b6b72; }
+  @bottom-right { content: "Page " counter(page) " / " counter(pages); font: 8.5pt "Inter", "Segoe UI", Arial, sans-serif; color: #6b6b72; }
+}
+@page :first { @top-left { content: none; border: 0; } @top-right { content: none; border: 0; } @bottom-left { content: none; } @bottom-right { content: none; } }
+
+:root { --ink: #1c1c1e; --muted: #5a5a60; --line: #d9d9de; --accent: #2b4c7e; --accent-soft: #e8eef7; --bg-soft: #f4f6fa; }
+* { box-sizing: border-box; }
+html { font-size: 10.5pt; }
+body { font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: var(--ink); line-height: 1.5; margin: 0; orphans: 3; widows: 3; }
+
+h1 { font-size: 1.9rem; margin: 0 0 .6rem; color: var(--accent); letter-spacing: -.01em; }
+h2 { font-size: 1.5rem; margin: 0 0 1rem; padding: .35rem .7rem; color: #fff; background: var(--accent); border-radius: 3px; page-break-after: avoid; page-break-before: always; }
+h3 { font-size: 1.15rem; margin: 1.6rem 0 .5rem; color: var(--accent); border-bottom: 1px solid var(--line); padding-bottom: .15rem; page-break-after: avoid; }
+h4 { font-size: 1rem; margin: 1.1rem 0 .3rem; page-break-after: avoid; }
+p { margin: .45rem 0 .75rem; text-align: justify; hyphens: auto; }
+a { color: var(--accent); text-decoration: none; }
+strong { font-weight: 600; }
+
+code { font-family: "JetBrains Mono", "Fira Code", Consolas, monospace; font-size: .86em; background: var(--bg-soft); padding: .08em .3em; border-radius: 3px; }
+pre { white-space: pre-wrap; background: #fbfbfd; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 4px; padding: .65rem .9rem; overflow-x: auto; font-size: .8rem; line-height: 1.4; page-break-inside: avoid; }
+pre code { background: none; padding: 0; font-size: inherit; }
+
+table { border-collapse: collapse; width: 100%; margin: .6rem 0 1.1rem; font-size: .88rem; page-break-inside: avoid; }
+th, td { border: 1px solid var(--line); padding: .35rem .55rem; text-align: left; vertical-align: top; }
+th { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+tr:nth-child(even) td { background: #fafbfd; }
+td:first-child { white-space: nowrap; }
+table.cartouche-tbl td:first-child, table.versions-tbl td:first-child { white-space: normal; }
+
+blockquote { margin: .8rem 0; padding: .5rem .9rem; border-left: 4px solid #c9a227; background: #fffaf0; color: #4a3f1a; page-break-inside: avoid; }
+blockquote p { margin: .2rem 0; }
+
+figure { margin: 1rem 0 1.2rem; page-break-inside: avoid; text-align: center; }
+img { max-width: 100%; display: block; margin: 0 auto; border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,.08); page-break-inside: avoid; }
+img[alt*="(mobile)"] { max-width: 38%; }
+img[alt*="(email)"] { max-width: 62%; }
+img[alt*="(schema)"] { border: 0; box-shadow: none; }
+p:has(> img:only-child) { page-break-inside: avoid; margin-bottom: .25rem; }
+p.legende { font-size: .84rem; color: var(--muted); text-align: center; font-style: italic; margin: .2rem 1.5rem 1rem; page-break-before: avoid; }
+p.legende strong { font-style: normal; color: var(--accent); }
+p:has(> strong:only-child) { page-break-after: avoid; }
+
+.pagebreak { page-break-after: always; }
+ul, ol { padding-left: 1.4rem; }
+li { margin: .15rem 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.6rem 0; }
+
+/* Page de garde */
+.couverture { page-break-after: always; display: flex; flex-direction: column; min-height: 240mm; }
+.couverture .bandeau { background: var(--accent); color: #fff; padding: 2.2rem 2rem; border-radius: 6px; margin-top: 3rem; }
+.couverture .bandeau .sur { font-size: .95rem; letter-spacing: .12em; text-transform: uppercase; opacity: .85; }
+.couverture .bandeau h1 { color: #fff; font-size: 2.4rem; margin: .4rem 0 .2rem; }
+.couverture .bandeau .sous { font-size: 1.15rem; opacity: .9; }
+.couverture .cartouche { margin-top: 2.5rem; }
+.couverture table.cartouche-tbl { font-size: .95rem; }
+.couverture table.cartouche-tbl th { width: 32%; background: var(--accent-soft); }
+.couverture .versions { margin-top: auto; }
+.couverture .versions h4 { color: var(--muted); font-size: .9rem; text-transform: uppercase; letter-spacing: .08em; }
+.couverture table.versions-tbl { font-size: .85rem; }
+
+/* Table des matières (style classique : titre ...... page) */
+.toc h2.toc-titre { page-break-before: avoid; }
+.toc a { display: flex; align-items: baseline; color: var(--ink); margin: .18rem 0; font-size: .95rem; }
+.toc a.toc-l3 { padding-left: 1.6rem; font-size: .9rem; }
+.toc a.toc-l2 { font-weight: 600; margin-top: .55rem; }
+.toc .t { white-space: nowrap; }
+.toc .d { flex: 1; border-bottom: 1.5px dotted #8a8a90; margin: 0 .35rem; min-width: 1rem; transform: translateY(-.3em); }
+.toc .n { white-space: nowrap; font-variant-numeric: tabular-nums; min-width: 1.6rem; text-align: right; }
