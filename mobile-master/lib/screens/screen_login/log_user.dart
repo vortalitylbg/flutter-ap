@@ -55,25 +55,51 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Connexion')),
+      backgroundColor: const Color(0xFFFAFAFA),
+      appBar: AppBar(title: Text('Connexion'), centerTitle: true,),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text(
+              'Bienvenue',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFF1A1A1A),
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Connectez-vous pour continuer',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 48),
+
             // Champ de saisie pour l'email
             TextField( 
+              style: TextStyle(color: Color(0xFF1A1A1A), fontSize: 15),
               controller: emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
                 prefixIcon: Icon(Icons.email),
                 border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Color(0xFFf3f4f6),
               ),
               keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(height: 20),
             // Champ de saisie pour le mot de passe + icone pour afficher/masquer le mot de passe
             TextField(
+              style: TextStyle(color: Color(0xFF344d59),),
               controller: passwordController,
               obscureText: !isPasswordVisible,
               decoration: InputDecoration(
@@ -88,6 +114,8 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                     });
                   },
                 ),
+                filled: true,
+                fillColor: Color(0xFFf3f4f6),
               ),
             ),
             SizedBox(height: 20),

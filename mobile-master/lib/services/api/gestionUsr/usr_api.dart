@@ -44,7 +44,7 @@ Future<Map<String, dynamic>?> loginUser(String mail,String paswd) async {
     // Vérification du statut de la réponse 
     // Si la réponse est 200, la connexion a réussi
     if (response.statusCode == 200) {
-      if (data != null && data['status'] == 'success') {
+      if (data != null) {
         return {
           'ok': true,
           'message': data['message'] ?? 'Connexion réussie',
