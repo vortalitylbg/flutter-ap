@@ -55,8 +55,8 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
-      appBar: AppBar(title: Text('Connexion'), centerTitle: true,),
+      backgroundColor: const Color(0xFFf3f4f6),
+      appBar: AppBar(title: Text('Connexion'), centerTitle: true, backgroundColor: Color(0xFFf3f4f6),),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -68,7 +68,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF1A1A1A),
+                color: Color(0xFF344d59),
                 letterSpacing: -0.5,
               ),
             ),
@@ -78,7 +78,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey,
+                color: Color(0xFF7a90a4),
               ),
             ),
             const SizedBox(height: 48),
@@ -118,6 +118,16 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                 fillColor: Color(0xFFf3f4f6),
               ),
             ),
+            SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+                  // Logique pour gérer l'oubli de mot de passe
+                },
+                child: Text('Mot de passe oublié?'),
+              ),
+            ),  
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _login,
