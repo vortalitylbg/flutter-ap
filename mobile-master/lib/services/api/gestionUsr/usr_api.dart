@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:resachev/models/usr.dart';
 import 'package:resachev/services/api/config.dart';
@@ -83,10 +84,12 @@ Future<Map<String, dynamic>?> loginUser(String mail,String paswd) async {
       'user': null,
     };
   } 
-  catch (e) {
+  catch (e, stackTrace) {
+    debugPrint('loginUser error: $e');
+    debugPrint('Stack trace: $stackTrace');
     return {
       'ok': false,
-      'message': 'Erreur inattendue pendant la connexion API.',
+      'message': 'Erreur API: $e',
       'user': null,
     };
   }
@@ -169,10 +172,12 @@ Future<Map<String, dynamic>?> loginUser(String mail,String paswd) async {
       'user': null,
     };
   } 
-  catch (e) {
+  catch (e, stackTrace) {
+    debugPrint('verifyUser error: $e');
+    debugPrint('Stack trace: $stackTrace');
     return {
       'ok': false,
-      'message': 'Erreur inattendue pendant la connexion API.',
+      'message': 'Erreur API: $e',
       'user': null,
     };
   }
