@@ -205,4 +205,96 @@ static Future<User?> rechercherInfoUsr() async {
     
     return null;
   }
+
+  // Met à jour les informations personnelles du staff connecté (US 1.4).
+  // Les champs modifiables sont le nom, le prénom et l'adresse email.
+  // Retourne une carte normalisée : {'ok': bool, 'message': String, 'user': User?}.
+  static Future<Map<String, dynamic>?> modifierInfoUsr({
+    required String nom,
+    required String prenom,
+    required String email,
+  }) async {
+    // Récupération du token de l'utilisateur pour l'authentification
+    final token = await GestionToken.getToken();
+    if (token == null || token.isEmpty) {
+      return <String, dynamic>{
+        'ok': false,
+        'message': 'Session expirée, veuillez vous reconnecter.',
+        'user': null,
+      };
+    }
+
+    final url = Uri.parse('${AppConfig.apiBaseUrl}/mobile/me');
+
+    try {
+      final response = await http
+          .put(
+            url,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: jsonEncode(<String, String>{
+              'nom': nom,
+              'prenom': prenom,
+              'email': email,
+            }),
+          )
+          .timeout(const Duration(seconds: 45));
+
+      Map<String, dynamic>? data;
+      if (response.body.isNotEmpty) {
+        try {
+          final decoded = jsonDecode(response.body);
+          if (decoded is Map<String, dynamic>) {
+            data = decoded;
+          }
+        } catch (_) {
+          data = null;
+        }
+      }
+
+      if (response.statusCode == 200) {
+        final brut = data?['utilisateur'];
+        return <String, dynamic>{
+          'ok': true,
+          'message': data?['message'] ?? 'Informations mises à jour.',
+          'user': brut is Map<String, dynamic> ? User.fromJson(brut) : null,
+        };
+      }
+
+      // 422 : une règle de validation du serveur a refusé la modification.
+      // Le message du serveur est déjà rédigé en français et plus précis que
+      // celui du client, on le renvoie donc tel quel.
+      if (response.statusCode == 422) {
+        return <String, dynamic>{
+          'ok': false,
+          'message': data?['message'] ?? 'Informations invalides.',
+          'user': null,
+        };
+      }
+
+      if (response.statusCode == 401) {
+        return <String, dynamic>{
+          'ok': false,
+          'message':
+              data?['message'] ?? 'Session expirée, veuillez vous reconnecter.',
+          'user': null,
+        };
+      }
+
+      return <String, dynamic>{
+        'ok': false,
+        'message': data?['message'] ?? 'Erreur serveur (${response.statusCode})',
+        'user': null,
+      };
+    } catch (_) {
+      return <String, dynamic>{
+        'ok': false,
+        'message': 'Erreur inattendue lors de la mise à jour du profil.',
+        'user': null,
+      };
+    }
+  }
 }

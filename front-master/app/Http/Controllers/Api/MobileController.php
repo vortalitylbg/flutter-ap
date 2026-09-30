@@ -252,27 +252,57 @@ class MobileController extends Controller
     }
 
     /**
-     * Met à jour les informations du staff connecté.
-     * Seul le nom est modifiable pour l'instant.
-     * TODO étudiant : ouvrir la modification aux autres champs (prenom, email...),
-     *   en ajoutant les règles de validation correspondantes (email unique notamment).
-     *   Ne jamais permettre de modifier idrole depuis l'application mobile.
+     * Met à jour les informations personnelles du staff connecté (US 1.4).
+     *
+     * Les champs modifiables sont le nom, le prénom et l'adresse email.
+     * Ni motpasse ni idrole ne sont exposés : le rôle du staff ne doit jamais
+     * être modifiable depuis l'application mobile.
+     *
+     * Règles de validation :
+     *  - nom et prénom : obligatoires, 100 caractères maximum, et sans chiffre
+     *    (règle métier US 1.4.3). Aucune autre restriction n'est appliquée, afin
+     *    d'accepter les lettres accentuées, les apostrophes et les traits
+     *    d'union propres aux noms français.
+     *  - email : obligatoire, format valide, et unique sur la table
+     *    utilisateur (en excluant la ligne de l'utilisateur connecté).
+     *
      * @return JsonResponse
      */
     public function updateMe(Request $request): JsonResponse
     {
-        $request->validate([
-            'nom' => 'required|string|max:100',
-        ], [
-            'nom.required' => 'Le nom est obligatoire.',
-            'nom.max'      => 'Le nom ne peut pas dépasser 100 caractères.',
-        ]);
-
         $utilisateur = $request->user();
 
-        // Seules les clés listées ici sont modifiées : les autres champs envoyés sont ignorés
+        // Règle commune au nom et au prénom (règle métier US 1.4.3).
+        $regleNom = ['required', 'string', 'max:100', 'not_regex:/[0-9]/'];
+
+        $request->validate([
+            'nom'    => $regleNom,
+            'prenom' => $regleNom,
+            'email'  => [
+                'required',
+                'string',
+                'email',
+                'max:128',
+                // unique:table,colonne,id à ignorer,colonne de la clé primaire
+                'unique:utilisateur,email,' . $utilisateur->idutilisateur . ',idutilisateur',
+            ],
+        ], [
+            'nom.required'     => 'Le nom est obligatoire.',
+            'nom.max'          => 'Le nom ne peut pas dépasser 100 caractères.',
+            'nom.not_regex'    => 'Le nom ne doit pas contenir de chiffre.',
+            'prenom.required'  => 'Le prénom est obligatoire.',
+            'prenom.max'       => 'Le prénom ne peut pas dépasser 100 caractères.',
+            'prenom.not_regex' => 'Le prénom ne doit pas contenir de chiffre.',
+            'email.required'   => 'L\'adresse email est obligatoire.',
+            'email.email'      => 'L\'adresse email n\'est pas valide.',
+            'email.max'        => 'L\'adresse email ne peut pas dépasser 128 caractères.',
+            'email.unique'     => 'Cette adresse email est déjà utilisée par un autre compte.',
+        ]);
+
         $utilisateur->update([
-            'nom' => $request->nom,
+            'nom'    => $request->nom,
+            'prenom' => $request->prenom,
+            'email'  => $request->email,
         ]);
 
         return response()->json([

@@ -9,7 +9,8 @@ Route::post('/mobile/verify-2fa', [MobileController::class, 'verify2FA'])->name(
 
 // Routes protégées par Sanctum (usage staff terrain)
 Route::middleware('auth:sanctum')->group(function () {
-    // Profil du staff connecté (lecture complète, mise à jour du nom seulement pour l'instant)
+    // Profil du staff connecté : lecture complète, et mise à jour des champs
+    // nom / prenom / email (idrole et motpasse ne sont jamais modifiables)
     Route::get('/mobile/me', [MobileController::class, 'getMe'])->name('api.mobile.me');
     Route::put('/mobile/me', [MobileController::class, 'updateMe'])->name('api.mobile.me.update');
     Route::get('/mobile/rdv', [MobileController::class, 'prochainRdv'])->name('api.mobile.rdv');

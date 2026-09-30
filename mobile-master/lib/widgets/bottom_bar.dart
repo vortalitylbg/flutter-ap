@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:resachev/services/gestion_token/token.dart';
 
-//Barre de navigation en bas de l'application. Est appelé une fois la connexion  validée.
+// Barre de navigation en bas de l'application. Est appelée une fois la
+// connexion validée. Les libellés relèvent du domaine d'activité « studio de
+// musique » afin de rester cohérents avec le thème de l'organisation.
 
 class BottomNavbar extends StatelessWidget {
   final int currentIndex;
@@ -12,6 +14,7 @@ class BottomNavbar extends StatelessWidget {
     required this.currentIndex,
     required this.onDestinationSelected,
   });
+
   // Empeche l'utilisateur d'aller dans l'application s'il n'est pas connecté
   Future<void> _verifValidite(BuildContext context, int index) async {
     if (index == 1) {
@@ -28,21 +31,21 @@ class BottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Construction de la barre de navigation 
+    // Construction de la barre de navigation
     return NavigationBar(
       selectedIndex: currentIndex,
-      onDestinationSelected: (index) => _verifValidite(context, index),
+      onDestinationSelected: (int index) => _verifValidite(context, index),
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       destinations: const [
         NavigationDestination(
           selectedIcon: Icon(Icons.home),
           icon: Icon(Icons.home_outlined),
-          label: 'Acceuil',
+          label: 'Accueil',
         ),
         NavigationDestination(
-          selectedIcon: Icon(Icons.list_outlined),
-          icon: Icon(Icons.list_alt_outlined),
-          label: 'Liste des reservations',
+          selectedIcon: Icon(Icons.event_available),
+          icon: Icon(Icons.event_note_outlined),
+          label: 'Planning',
         ),
         NavigationDestination(
           selectedIcon: Icon(Icons.settings),

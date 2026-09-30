@@ -62,5 +62,28 @@ class Reservation {
     );
   }
 
+  /// Nom et prénom du client, dans l'ordre « Prénom NOM ».
+  /// Retourne une chaîne vide lorsque l'identité n'est pas renseignée.
+  String get nomClient {
+    return [utilisateur?.prenom, utilisateur?.nom]
+        .where((String? valeur) => valeur != null && valeur.trim().isNotEmpty)
+        .join(' ')
+        .trim();
+  }
+
+  /// US 1.3 : indique si le client est enregistré pour cette prestation.
+  ///
+  /// L'API ne renvoie pas d'indicateur d'inscription dédié : on considère donc
+  /// qu'un client est enregistré lorsque son identité (nom et prénom) est
+  /// renseignée sur le rendez-vous. Une séance sans identité correspond à une
+  /// personne non enregistrée, accueillie sans compte au studio.
+  bool get clientEnregistre {
+    final String? nom = utilisateur?.nom?.trim();
+    final String? prenom = utilisateur?.prenom?.trim();
+    return nom != null &&
+        nom.isNotEmpty &&
+        prenom != null &&
+        prenom.isNotEmpty;
+  }
 }
 

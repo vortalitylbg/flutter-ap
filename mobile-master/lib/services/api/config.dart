@@ -7,8 +7,11 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart' show rootBundle;
 
 class AppConfig {
-  static late final String apiBaseUrl;
-  static late final String appVersion;
+  // Valeurs de repli utilisées tant que load() n'a pas été exécuté.
+  // Elles évitent une LateInitializationError si un écran lit la
+  // configuration avant la fin du chargement (tests, ouverture rapide).
+  static String apiBaseUrl = 'http://localhost:8000/api';
+  static String appVersion = '1.0.0';
 
   // Méthode pour lire la configuration depuis le fichier .env
   static Future<void> load() async {
@@ -18,17 +21,17 @@ class AppConfig {
     final Map<String, dynamic> config = jsonDecode(jsonString);
 
     if (kIsWeb) {
-      apiBaseUrl = config['API_URL_WEB'];
+      apiBaseUrl = config['API_URL_WEB'] ?? apiBaseUrl;
     } else if (Platform.isAndroid) {
-      apiBaseUrl = config['API_URL_ANDROID'];
+      apiBaseUrl = config['API_URL_ANDROID'] ?? apiBaseUrl;
     } else if (Platform.isIOS) {
-      apiBaseUrl = config['API_URL_IOS'];
+      apiBaseUrl = config['API_URL_IOS'] ?? apiBaseUrl;
     } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      apiBaseUrl = config['API_URL_DESKTOP'] ?? config['API_URL_WEB'];
+      apiBaseUrl = config['API_URL_DESKTOP'] ?? config['API_URL_WEB'] ?? apiBaseUrl;
     } else {
-      apiBaseUrl = config['API_URL_WEB'] ?? 'http://localhost:8000/api';
+      apiBaseUrl = config['API_URL_WEB'] ?? apiBaseUrl;
     }
 
-    appVersion = config['APP_VERSION'] ?? '1.0.0';
+    appVersion = config['APP_VERSION'] ?? appVersion;
   }
 }
