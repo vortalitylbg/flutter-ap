@@ -13,10 +13,10 @@ class ReservationApi
   static Future<List<Reservation>> listerReservations() async {
     // Récupération du token de l'utilisateur pour l'authentification
     final token = await GestionToken.getToken();
-        if (token == null || token.isEmpty) {
-      return [];
+    if (token == null || token.isEmpty) {
+      throw Exception('Token d’authentification absent.');
     }
-  // Construction de l'URL de l'API pour récupérer les réservations
+
     final url = Uri.parse('${AppConfig.apiBaseUrl}/mobile/rdv');
 
     try {
@@ -30,23 +30,31 @@ class ReservationApi
       );
 
       if (response.statusCode != 200) {
-        return [];
+        throw Exception('HTTP ${response.statusCode} lors de la récupération des rendez-vous.');
       }
-      // Décodage de la réponse JSON de l'API
+
       final decoded = json.decode(response.body);
 
       List<dynamic> listeBrute = [];
-      // Vérification si la réponse est une liste
-      if (decoded is List) {      
+      if (decoded is List) {
         listeBrute = decoded;
-      } 
-      // Convertion des données en objets Reservation
-      return listeBrute
+      } else if (decoded is Map<String, dynamic>) {
+        final nested = decoded['data'] ?? decoded['reservations'] ?? decoded['result'];
+        if (nested is List) {
+          listeBrute = nested;
+        }
+      }
+
+      final reservations = listeBrute
           .whereType<Map<String, dynamic>>()
           .map(Reservation.fromJson)
+          .where((reservation) => reservation.estAvenir)
           .toList();
-    } catch (_) {
-      return [];
+
+      reservations.sort((a, b) => a.comparerParDateEtHeure(b));
+      return reservations;
+    } catch (e) {
+      rethrow;
     }
   }
 

@@ -451,7 +451,6 @@ class _AccueilState extends State<Accueil> {
       body: ListView(
         padding: const EdgeInsets.only(bottom: 24),
         children: <Widget>[
-          _buildBanniere(),
           _buildPresentation(),
           const SizedBox(height: 18),
           Padding(
@@ -493,21 +492,7 @@ class _AccueilState extends State<Accueil> {
           _buildPiedDePage(),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute<void>(
-              builder: (_) => const QrScannerScreen(),
-            ),
-          );
-        },
-        icon: const Icon(Icons.qr_code_scanner),
-        label: const Text(
-          'Scanner',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
-        tooltip: 'Scanner le QR code d\'un artiste',
-      ),
+      
     );
   }
 }

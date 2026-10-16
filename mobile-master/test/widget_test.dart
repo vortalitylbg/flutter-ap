@@ -73,6 +73,93 @@ void main() {
       expect(AppColors.enregistreTexte, isNot(AppColors.nonEnregistreTexte));
       expect(AppColors.enregistreFond, isNot(AppColors.nonEnregistreFond));
     });
+
+    test('une réservation est retrouvée par nom du client ou par prestation', () {
+      final Reservation reservation = Reservation.fromJson(<String, dynamic>{
+        'idreservation': '12',
+        'datedebut': '07/07/2026',
+        'heuredebut': '09:00',
+        'validationpresence': false,
+        'prestation': 'Mixage & mastering',
+        'utilisateur': <String, dynamic>{
+          'idutilisateur': 7,
+          'nom': 'Dupont',
+          'prenom': 'Camille',
+          'email': 'camille@studio.fr',
+        },
+      });
+
+      expect(reservation.correspondRecherche('camille'), isTrue);
+      expect(reservation.correspondRecherche('dupont'), isTrue);
+      expect(reservation.correspondRecherche('mixage'), isTrue);
+      expect(reservation.correspondRecherche('podcast'), isFalse);
+      expect(reservation.correspondRecherche(''), isTrue);
+    });
+
+    test('le parseur accepte les valeurs de la base actuelle (bool/int et dates ISO)', () {
+      final Reservation reservation = Reservation.fromJson(<String, dynamic>{
+        'idreservation': 12,
+        'datedebut': '2026-10-20',
+        'heuredebut': '09:00:00',
+        'validationpresence': 1,
+        'prestation': 'Mixage & mastering',
+        'utilisateur': <String, dynamic>{
+          'idutilisateur': 7,
+          'nom': 'Dupont',
+          'prenom': 'Camille',
+          'email': 'camille@studio.fr',
+        },
+      });
+
+      expect(reservation.validationpresence, isTrue);
+      expect(reservation.datedebut, isNotNull);
+      expect(reservation.heuredebut, isNotNull);
+      expect(reservation.nomClient, 'Camille Dupont');
+      expect(reservation.estAvenir, isTrue);
+    });
+
+    test('les réservations passées sont exclues et les suivantes sont triées', () {
+      String formaterDate(DateTime date) {
+        final jour = date.day.toString().padLeft(2, '0');
+        final mois = date.month.toString().padLeft(2, '0');
+        final annee = date.year.toString();
+        return '$jour/$mois/$annee';
+      }
+
+      final now = DateTime.now();
+      final Reservation reservationPasse = Reservation.fromJson(<String, dynamic>{
+        'idreservation': 'A',
+        'datedebut': formaterDate(now.add(const Duration(days: -2))),
+        'heuredebut': '09:00',
+        'validationpresence': false,
+        'prestation': 'Enregistrement',
+      });
+      final Reservation reservationFuture1 = Reservation.fromJson(<String, dynamic>{
+        'idreservation': 'B',
+        'datedebut': formaterDate(now.add(const Duration(days: 1))),
+        'heuredebut': '11:00',
+        'validationpresence': false,
+        'prestation': 'Mixage',
+      });
+      final Reservation reservationFuture2 = Reservation.fromJson(<String, dynamic>{
+        'idreservation': 'C',
+        'datedebut': formaterDate(now.add(const Duration(days: 2))),
+        'heuredebut': '09:30',
+        'validationpresence': false,
+        'prestation': 'Mastering',
+      });
+
+      final reservations = <Reservation>[reservationPasse, reservationFuture1, reservationFuture2]
+          .where((reservation) => reservation.estAvenir)
+          .toList()
+        ..sort((a, b) => a.comparerParDateEtHeure(b));
+
+      expect(reservationPasse.estAvenir, isFalse);
+      expect(reservationFuture1.estAvenir, isTrue);
+      expect(reservationFuture2.estAvenir, isTrue);
+      expect(reservations.first.idreservation, 'B');
+      expect(reservations.last.idreservation, 'C');
+    });
   });
 
   group('US 1.4 - Validation des informations', () {

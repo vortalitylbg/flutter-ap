@@ -20,16 +20,25 @@ class AppConfig {
     final jsonString = await rootBundle.loadString('assets/env.dev.json');
     final Map<String, dynamic> config = jsonDecode(jsonString);
 
+    final String? parsedWeb = config['API_URL_WEB']?.toString();
+    final String? parsedAndroid = config['API_URL_ANDROID']?.toString();
+    final String? parsedIos = config['API_URL_IOS']?.toString();
+    final String? parsedDesktop = config['API_URL_DESKTOP']?.toString();
+
     if (kIsWeb) {
-      apiBaseUrl = config['API_URL_WEB'] ?? apiBaseUrl;
+      apiBaseUrl = (parsedWeb?.isNotEmpty ?? false) ? parsedWeb! : apiBaseUrl;
     } else if (Platform.isAndroid) {
-      apiBaseUrl = config['API_URL_ANDROID'] ?? apiBaseUrl;
+      apiBaseUrl = (parsedAndroid?.isNotEmpty ?? false) ? parsedAndroid! : apiBaseUrl;
     } else if (Platform.isIOS) {
-      apiBaseUrl = config['API_URL_IOS'] ?? apiBaseUrl;
+      apiBaseUrl = (parsedIos?.isNotEmpty ?? false) ? parsedIos! : apiBaseUrl;
     } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      apiBaseUrl = config['API_URL_DESKTOP'] ?? config['API_URL_WEB'] ?? apiBaseUrl;
+      apiBaseUrl = (parsedDesktop?.isNotEmpty ?? false)
+          ? parsedDesktop!
+          : (parsedWeb?.isNotEmpty ?? false)
+              ? parsedWeb!
+              : apiBaseUrl;
     } else {
-      apiBaseUrl = config['API_URL_WEB'] ?? apiBaseUrl;
+      apiBaseUrl = (parsedWeb?.isNotEmpty ?? false) ? parsedWeb! : apiBaseUrl;
     }
 
     appVersion = config['APP_VERSION'] ?? appVersion;

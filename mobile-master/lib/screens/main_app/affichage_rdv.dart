@@ -18,11 +18,19 @@ class Affichagerdv extends StatefulWidget {
 
 class _AffichagerdvState extends State<Affichagerdv> {
   late Future<List<Reservation>> _futureReservations;
+  final TextEditingController _rechercheController = TextEditingController();
+  String _recherche = '';
 
   @override
   void initState() {
     super.initState();
     _futureReservations = ReservationApi.listerReservations();
+  }
+
+  @override
+  void dispose() {
+    _rechercheController.dispose();
+    super.dispose();
   }
 
   // Méthode pour appeler l'API et rafraîchir la liste des rendez-vous
@@ -175,6 +183,48 @@ class _AffichagerdvState extends State<Affichagerdv> {
     );
   }
 
+  // Méthode pour construire la barre de recherche des rendez-vous par nom du
+  // client et/ou prestation afin de confirmer la réservation concernée.
+  Widget _buildBarreRecherche() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: TextField(
+        controller: _rechercheController,
+        textInputAction: TextInputAction.search,
+        decoration: InputDecoration(
+          hintText: 'Rechercher par nom ou prestation',
+          prefixIcon: const Icon(Icons.search, color: AppColors.principal),
+          suffixIcon: _recherche.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.clear, color: AppColors.secondaire),
+                  onPressed: () {
+                    _rechercheController.clear();
+                    setState(() => _recherche = '');
+                  },
+                )
+              : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: AppColors.bordure),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: AppColors.principal, width: 1.6),
+          ),
+          filled: true,
+          fillColor: AppColors.blanc,
+          contentPadding: const EdgeInsets.symmetric(vertical: 14),
+        ),
+        onChanged: (String query) {
+          setState(() {
+            _recherche = query;
+          });
+        },
+      ),
+    );
+  }
+
+
   /// Méthode pour construire la carte d'une séance.
   ///
   /// Règle métier US 1.3.2 et 1.3.3 : la carte change de couleur selon que le
@@ -315,7 +365,7 @@ class _AffichagerdvState extends State<Affichagerdv> {
   }
 
   /// Message d'état vide.
-  Widget _buildListeVide() {
+  Widget _buildListeVide({String title = 'Aucune séance à venir.', String subtitle = 'Les réservations du studio apparaîtront ici.'}) {
     return RefreshIndicator(
       onRefresh: _rafraichir,
       child: ListView(
@@ -324,20 +374,20 @@ class _AffichagerdvState extends State<Affichagerdv> {
           const Icon(Icons.event_busy_outlined,
               size: 44, color: AppColors.secondaire),
           const SizedBox(height: 12),
-          const Text(
-            'Aucune séance à venir.',
+          Text(
+            title,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w600,
               color: AppColors.secondaire,
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
-            'Les réservations du studio apparaîtront ici.',
+          Text(
+            subtitle,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 13, color: AppColors.secondaire),
+            style: const TextStyle(fontSize: 13, color: AppColors.secondaire),
           ),
         ],
       ),
@@ -375,6 +425,7 @@ class _AffichagerdvState extends State<Affichagerdv> {
           ),
         ),
         const SizedBox(height: 14),
+        _buildBarreRecherche(),
         Expanded(
           child: FutureBuilder<List<Reservation>>(
             future: _futureReservations,
@@ -416,20 +467,33 @@ class _AffichagerdvState extends State<Affichagerdv> {
               }
 
               final List<Reservation> reservations = snapshot.data ?? <Reservation>[];
+              final List<Reservation> reservationsFiltrees = reservations
+                  .where((Reservation reservation) =>
+                      reservation.correspondRecherche(_recherche))
+                  .toList();
 
-              if (reservations.isEmpty) return _buildListeVide();
+              if (reservationsFiltrees.isEmpty) {
+                return _buildListeVide(
+                  title: _recherche.trim().isEmpty
+                      ? 'Aucune séance à venir.'
+                      : 'Aucun rendez-vous trouvé.',
+                  subtitle: _recherche.trim().isEmpty
+                      ? 'Les réservations du studio apparaîtront ici.'
+                      : 'Essayez un nom de client ou une prestation différente.',
+                );
+              }
 
               return RefreshIndicator(
                 onRefresh: _rafraichir,
                 child: ListView.builder(
                   padding: const EdgeInsets.only(bottom: 24),
-                  itemCount: reservations.length + 1,
+                  itemCount: reservationsFiltrees.length + 1,
                   itemBuilder: (BuildContext context, int index) {
                     // La première ligne de la liste est le bandeau récapitulatif.
                     if (index == 0) {
-                      return _buildRecapitulatif(reservations);
+                      return _buildRecapitulatif(reservationsFiltrees);
                     }
-                    return _buildCarteReservation(reservations[index - 1]);
+                    return _buildCarteReservation(reservationsFiltrees[index - 1]);
                   },
                 ),
               );
