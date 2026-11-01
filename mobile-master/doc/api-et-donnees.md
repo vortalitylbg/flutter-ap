@@ -40,6 +40,16 @@ La valeur Android est l'**adresse du poste de développement sur le réseau loca
 
 Les deux dernières routes sont **branchées depuis la dernière version** : le scanner résout l'identifiant lu auprès de l'API au lieu d'analyser un texte, et l'écran Paramètres affiche l'identité du staff connecté.
 
+### Routes ajoutées par le Lot 3
+
+| Méthode | Route | Utilisé par |
+|---|---|---|
+| `GET` | `/mobile/liste-attente?idreservation={id}` | `ReservationApi.listerListeAttente()` — écran Liste d'attente |
+| `POST` | `/mobile/liste-attente` | `ReservationApi.inscrireListeAttente()` — inscription d'un client à l'accueil |
+| `POST` | `/mobile/liste-attente/proposer` | `ReservationApi.proposerPlace()` — proposition au premier inscrit |
+
+`POST /mobile/annuler-reservation` accepte désormais un champ facultatif `portee` (`"serie"`) pour annuler toutes les occurrences à venir d'une réservation récurrente ; sans ce champ, seule l'occurrence est annulée. Les champs `capacite`, `placesrestantes`, `nbattente`, `idrecurrence`, `recurrence`, `finrecurrence`, `numerooccurrence` et `nboccurrences` sont lus s'ils sont présents sur `/mobile/rdv`. Règles, impacts et contrat détaillé : [lot3-attente-et-recurrence.md](lot3-attente-et-recurrence.md).
+
 ### Endpoint disponible mais **non utilisé**
 
 | Méthode | Route | Ce qu'elle permettrait |

@@ -3,6 +3,7 @@ import 'package:resachev/screens/affichage_plog.dart';
 import 'package:resachev/screens/screen_login/twofa_user.dart';
 import 'package:resachev/services/api/gestionUsr/usr_api.dart';
 import 'package:resachev/services/gestion_token/token.dart';
+import 'package:resachev/theme/app_theme.dart';
 
 class LoginUtilisateur extends StatefulWidget {
   const LoginUtilisateur({super.key});
@@ -20,9 +21,10 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
   bool _isPasswordVisible = false;
   bool _isLoading = false;
 
-  static const Color primaryColor = Color(0xFF344D59);
-  static const Color secondaryColor = Color(0xFF7A90A4);
-  static const Color backgroundColor = Color(0xFFF3F4F6);
+  // US 2.4 : la page de connexion suit elle aussi le mode clair / sombre.
+  static Color get primaryColor => AppColors.principal;
+  static Color get secondaryColor => AppColors.secondaire;
+  static Color get backgroundColor => AppColors.fond;
 
   @override
   void dispose() {
@@ -149,6 +151,8 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
 
   @override
   Widget build(BuildContext context) {
+    AppColors.suivreTheme(context);
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -170,7 +174,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                     // Logo
                     Center(
                       child: Image.asset(
-                        'images/logo.png',
+                        'assets/images/logo.png',
                         width: 170,
                         height: 170,
                         fit: BoxFit.contain,
@@ -180,7 +184,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                     const SizedBox(height: 20),
 
                     // Titre
-                    const Text(
+                    Text(
                       'Bienvenue',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -193,7 +197,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
 
                     const SizedBox(height: 8),
 
-                    const Text(
+                    Text(
                       'Connectez-vous pour continuer',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -214,7 +218,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                         AutofillHints.username,
                         AutofillHints.email,
                       ],
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: primaryColor,
                         fontSize: 15,
                       ),
@@ -237,7 +241,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                         AutofillHints.password,
                       ],
                       onFieldSubmitted: (_) => _login(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: primaryColor,
                         fontSize: 15,
                       ),
@@ -304,9 +308,9 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                         onPressed: _isLoading ? null : _login,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppColors.surAccent,
                           disabledBackgroundColor:
-                              primaryColor.withOpacity(0.6),
+                              primaryColor.withValues(alpha: 0.6),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
@@ -315,13 +319,13 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 200),
                           child: _isLoading
-                              ? const SizedBox(
-                                  key: ValueKey('loading'),
+                              ? SizedBox(
+                                  key: const ValueKey('loading'),
                                   width: 24,
                                   height: 24,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2.5,
-                                    color: Colors.white,
+                                    color: AppColors.surAccent,
                                   ),
                                 )
                               : const Text(
@@ -342,13 +346,11 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.7),
+                        color: AppColors.surface,
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Colors.black.withOpacity(0.05),
-                        ),
+                        border: Border.all(color: AppColors.bordure),
                       ),
-                      child: const Row(
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(
@@ -356,7 +358,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
                             color: primaryColor,
                             size: 21,
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'Après votre connexion, un code de vérification '
@@ -394,7 +396,7 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
         color: secondaryColor,
       ),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: AppColors.surface,
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 16,
@@ -405,13 +407,11 @@ class _LoginUtilisateurState extends State<LoginUtilisateur> {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: BorderSide(
-          color: Colors.black.withOpacity(0.06),
-        ),
+        borderSide: BorderSide(color: AppColors.bordure),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(
+        borderSide: BorderSide(
           color: primaryColor,
           width: 1.5,
         ),

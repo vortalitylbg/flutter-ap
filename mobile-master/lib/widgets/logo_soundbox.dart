@@ -33,7 +33,7 @@ class LogoSoundBox extends StatelessWidget {
       height: taille,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: AppColors.degradePrincipal,

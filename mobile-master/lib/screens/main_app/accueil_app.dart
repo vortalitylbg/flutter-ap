@@ -35,7 +35,7 @@ class _AccueilState extends State<Accueil> {
           Expanded(
             child: Text(
               titre,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w800,
                 color: AppColors.principal,
@@ -56,7 +56,7 @@ class _AccueilState extends State<Accueil> {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: AppColors.degradePrincipal,
@@ -106,7 +106,7 @@ class _AccueilState extends State<Accueil> {
                 return Container(
                   color: AppColors.principal,
                   alignment: Alignment.center,
-                  child: const Icon(
+                  child: Icon(
                     Icons.graphic_eq,
                     size: 56,
                     color: AppColors.principalVoile,
@@ -119,13 +119,13 @@ class _AccueilState extends State<Accueil> {
             padding: const EdgeInsets.fromLTRB(20, 14, 20, 18),
             child: Row(
               children: <Widget>[
-                const Icon(Icons.place_outlined,
+                Icon(Icons.place_outlined,
                     size: 16, color: AppColors.principalVoile),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     Organisation.adresse,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12.5,
                       color: AppColors.principalVoile,
                       fontWeight: FontWeight.w500,
@@ -147,7 +147,7 @@ class _AccueilState extends State<Accueil> {
       margin: const EdgeInsets.fromLTRB(16, 14, 16, 0),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.blanc,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.bordure),
       ),
@@ -156,7 +156,7 @@ class _AccueilState extends State<Accueil> {
         children: <Widget>[
           Text(
             'Le studio',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w800,
               color: AppColors.principal,
@@ -165,7 +165,7 @@ class _AccueilState extends State<Accueil> {
           const SizedBox(height: 8),
           Text(
             Organisation.description,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14.5,
               height: 1.45,
               color: AppColors.texte,
@@ -178,13 +178,13 @@ class _AccueilState extends State<Accueil> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Icon(Icons.smartphone_outlined,
+              Icon(Icons.smartphone_outlined,
                   size: 18, color: AppColors.principal),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   Organisation.descriptionApplication,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     height: 1.45,
                     color: AppColors.secondaire,
@@ -242,7 +242,7 @@ class _AccueilState extends State<Accueil> {
               return Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppColors.blanc,
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: AppColors.bordure),
                 ),
@@ -264,7 +264,7 @@ class _AccueilState extends State<Accueil> {
                     const SizedBox(height: 10),
                     Text(
                       service.titre,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14.5,
                         fontWeight: FontWeight.w800,
                         color: AppColors.principal,
@@ -274,7 +274,7 @@ class _AccueilState extends State<Accueil> {
                     Expanded(
                       child: Text(
                         service.description,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12.5,
                           height: 1.35,
                           color: AppColors.secondaire,
@@ -298,7 +298,7 @@ class _AccueilState extends State<Accueil> {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: miseEnAvant ? AppColors.principalVoile : AppColors.blanc,
+        color: miseEnAvant ? AppColors.principalVoile : AppColors.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: miseEnAvant ? AppColors.principal : AppColors.bordure,
@@ -310,7 +310,7 @@ class _AccueilState extends State<Accueil> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.blanc,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(actualite.icone, size: 22, color: AppColors.principal),
@@ -331,11 +331,11 @@ class _AccueilState extends State<Accueil> {
                       ),
                       child: Text(
                         actualite.categorie.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 0.6,
-                          color: AppColors.blanc,
+                          color: AppColors.surAccent,
                         ),
                       ),
                     ),
@@ -343,7 +343,7 @@ class _AccueilState extends State<Accueil> {
                     Expanded(
                       child: Text(
                         actualite.date,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 11.5,
                           fontWeight: FontWeight.w600,
                           color: AppColors.secondaire,
@@ -355,7 +355,7 @@ class _AccueilState extends State<Accueil> {
                 const SizedBox(height: 6),
                 Text(
                   actualite.titre,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w800,
                     color: AppColors.texte,
@@ -365,7 +365,7 @@ class _AccueilState extends State<Accueil> {
                 const SizedBox(height: 4),
                 Text(
                   actualite.resume,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     height: 1.4,
                     color: AppColors.secondaire,
@@ -437,7 +437,7 @@ class _AccueilState extends State<Accueil> {
         Expanded(
           child: Text(
             texte,
-            style: const TextStyle(fontSize: 13, color: AppColors.texte),
+            style: TextStyle(fontSize: 13, color: AppColors.texte),
           ),
         ),
       ],
@@ -446,6 +446,9 @@ class _AccueilState extends State<Accueil> {
 
   @override
   Widget build(BuildContext context) {
+    // US 2.4 : la palette suit le mode clair / sombre courant.
+    AppColors.suivreTheme(context);
+
     return Scaffold(
       backgroundColor: AppColors.fond,
       body: ListView(
@@ -458,7 +461,7 @@ class _AccueilState extends State<Accueil> {
             child: Row(
               children: <Widget>[
                 _buildCarteInfos(
-                  () => const Text(
+                  () => Text(
                     Organisation.horaires,
                     style: TextStyle(
                       fontSize: 13,
@@ -471,7 +474,7 @@ class _AccueilState extends State<Accueil> {
                 ),
                 const SizedBox(width: 12),
                 _buildCarteInfos(
-                  () => const Text(
+                  () => Text(
                     Organisation.telephone,
                     style: TextStyle(
                       fontSize: 13,
@@ -492,7 +495,17 @@ class _AccueilState extends State<Accueil> {
           _buildPiedDePage(),
         ],
       ),
-      
+      // US 2.3 : accès au lecteur de QR code depuis l'accueil.
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const QrScannerScreen()),
+          );
+        },
+        icon: const Icon(Icons.qr_code_scanner),
+        label: const Text('Scanner'),
+        tooltip: 'Lire un QR code',
+      ),
     );
   }
 }

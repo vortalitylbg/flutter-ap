@@ -6,6 +6,7 @@ import 'package:resachev/services/api/config.dart';
 import 'package:resachev/services/api/gestionUsr/usr_api.dart';
 import 'package:resachev/services/gestion_token/token.dart';
 import 'package:resachev/theme/app_theme.dart';
+import 'package:resachev/theme/theme_controller.dart';
 import 'package:resachev/widgets/logo_soundbox.dart';
 
 // US 1.2 : la page des paramètres affiche les informations du compte, dont
@@ -121,9 +122,9 @@ class _ParamAppState extends State<ParamApp> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-              icon: const Icon(Icons.logout,
+              icon: Icon(Icons.logout,
                   size: 40, color: AppColors.nonEnregistreTexte),
-              title: const Text(
+              title: Text(
                 'Se déconnecter',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -132,7 +133,7 @@ class _ParamAppState extends State<ParamApp> {
                   color: AppColors.principal,
                 ),
               ),
-              content: const Text(
+              content: Text(
                 'Vous pourrez ensuite transmettre le terminal à votre '
                 'collègue. La page de connexion sera affichée.',
                 textAlign: TextAlign.center,
@@ -175,7 +176,7 @@ class _ParamAppState extends State<ParamApp> {
       margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: AppColors.blanc,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.principal, width: 1.5),
       ),
@@ -187,25 +188,26 @@ class _ParamAppState extends State<ParamApp> {
           Container(
             color: AppColors.principal,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: const Row(
+            child: Row(
               children: <Widget>[
-                Icon(Icons.badge_outlined, size: 18, color: AppColors.blanc),
-                SizedBox(width: 10),
+                Icon(Icons.badge_outlined,
+                    size: 18, color: AppColors.surAccent),
+                const SizedBox(width: 10),
                 Text(
                   'Informations du compte',
                   style: TextStyle(
                     fontSize: 14.5,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.3,
-                    color: AppColors.blanc,
+                    color: AppColors.surAccent,
                   ),
                 ),
               ],
             ),
           ),
           if (chargementEnCours && me == null)
-            const Padding(
-              padding: EdgeInsets.all(24),
+            Padding(
+              padding: const EdgeInsets.all(24),
               child: Center(
                 child: SizedBox(
                   height: 24,
@@ -262,7 +264,7 @@ class _ParamAppState extends State<ParamApp> {
                         backgroundColor: AppColors.principalVoile,
                         child: Text(
                           _initiales(me!),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w800,
                             color: AppColors.principal,
@@ -276,7 +278,7 @@ class _ParamAppState extends State<ParamApp> {
                           children: <Widget>[
                             Text(
                               _nomComplet(me!),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.texte,
@@ -284,7 +286,7 @@ class _ParamAppState extends State<ParamApp> {
                               ),
                             ),
                             const SizedBox(height: 3),
-                            const Text(
+                            Text(
                               'Personnel du studio',
                               style: TextStyle(
                                 fontSize: 13,
@@ -353,7 +355,7 @@ class _ParamAppState extends State<ParamApp> {
             children: <Widget>[
               Text(
                 libelle,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                   letterSpacing: 0.2,
@@ -383,14 +385,14 @@ class _ParamAppState extends State<ParamApp> {
       margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
       decoration: BoxDecoration(
-        color: AppColors.blanc,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.bordure),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Mon compte',
             style: TextStyle(
               fontSize: 16,
@@ -399,7 +401,7 @@ class _ParamAppState extends State<ParamApp> {
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
+          Text(
             'Mettez à jour les informations que le studio utilise pour vous '
             'identifier.',
             style: TextStyle(
@@ -423,6 +425,83 @@ class _ParamAppState extends State<ParamApp> {
     );
   }
 
+  /// Carte « Affichage » : choix du mode clair ou sombre (US 2.4).
+  Widget _buildCarteApparence() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.bordure),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Affichage',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: AppColors.principal,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Choisissez le thème le plus confortable selon la luminosité du '
+            'studio. Votre choix est conservé au prochain lancement.',
+            style: TextStyle(
+              fontSize: 13,
+              height: 1.4,
+              color: AppColors.secondaire,
+            ),
+          ),
+          const SizedBox(height: 6),
+          ValueListenableBuilder<ThemeMode>(
+            valueListenable: ThemeController.mode,
+            builder: (BuildContext context, ThemeMode mode, Widget? child) {
+              final bool sombre = mode == ThemeMode.dark;
+              // L'écran est aussi rendu sans Scaffold dans les tests : le
+              // Material explicite fournit l'ancêtre attendu par ListTile.
+              return Material(
+                type: MaterialType.transparency,
+                child: SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: sombre,
+                  onChanged: (bool valeur) {
+                    ThemeController.definirSombre(valeur);
+                  },
+                  title: Text(
+                    'Mode sombre',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.texte,
+                    ),
+                  ),
+                  subtitle: Text(
+                    sombre
+                        ? 'Thème sombre appliqué à toute l\'application.'
+                        : 'Thème clair appliqué à toute l\'application.',
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: AppColors.secondaire,
+                    ),
+                  ),
+                  secondary: Icon(
+                    Icons.dark_mode_outlined,
+                    color: AppColors.principal,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   /// Carte « Session » : déconnexion et informations sur l'application.
   Widget _buildCarteSession() {
     return Container(
@@ -430,14 +509,14 @@ class _ParamAppState extends State<ParamApp> {
       margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       padding: const EdgeInsets.fromLTRB(16, 14, 16, 16),
       decoration: BoxDecoration(
-        color: AppColors.blanc,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: AppColors.bordure),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Text(
+          Text(
             'Session',
             style: TextStyle(
               fontSize: 16,
@@ -446,7 +525,7 @@ class _ParamAppState extends State<ParamApp> {
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
+          Text(
             'Le terminal est partagé entre les employés : déconnectez-vous '
             'avant de le transmettre.',
             style: TextStyle(
@@ -463,7 +542,7 @@ class _ParamAppState extends State<ParamApp> {
               onPressed: _confirmerDeconnexion,
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.nonEnregistreTexte,
-                side: const BorderSide(color: AppColors.nonEnregistreTexte),
+                side: BorderSide(color: AppColors.nonEnregistreTexte),
               ),
               icon: const Icon(Icons.logout, size: 20),
               label: const Text('Se déconnecter'),
@@ -485,7 +564,7 @@ class _ParamAppState extends State<ParamApp> {
           Text(
             'SoundBox Booking · Version ${AppConfig.appVersion}',
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12, color: AppColors.secondaire),
+            style: TextStyle(fontSize: 12, color: AppColors.secondaire),
           ),
         ],
       ),
@@ -520,14 +599,17 @@ class _ParamAppState extends State<ParamApp> {
 
   @override
   Widget build(BuildContext context) {
+    // US 2.4 : la palette suit le mode clair / sombre courant.
+    AppColors.suivreTheme(context);
+
     return RefreshIndicator(
       color: AppColors.principal,
       onRefresh: chargerUtilisateur,
       child: ListView(
         padding: const EdgeInsets.only(top: 4, bottom: 24),
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 8, 16, 4),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -540,7 +622,7 @@ class _ParamAppState extends State<ParamApp> {
                     letterSpacing: -0.5,
                   ),
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Text(
                   'Vos informations et la gestion de la session.',
                   style: TextStyle(fontSize: 13, color: AppColors.secondaire),
@@ -551,6 +633,7 @@ class _ParamAppState extends State<ParamApp> {
           _buildZoneInformations(),
           _buildCarteCompte(),
           _buildCarteSession(),
+          _buildCarteApparence(),
           _buildPiedDePage(),
         ],
       ),

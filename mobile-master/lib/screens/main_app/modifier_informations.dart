@@ -156,9 +156,9 @@ class _ModifierInformationsState extends State<ModifierInformations> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          icon: const Icon(Icons.check_circle,
+          icon: Icon(Icons.check_circle,
               size: 44, color: AppColors.enregistreTexte),
-          title: const Text(
+          title: Text(
             'Modification enregistrée',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -170,7 +170,7 @@ class _ModifierInformationsState extends State<ModifierInformations> {
           content: Text(
             'Vos informations personnelles ont bien été mises à jour.',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               height: 1.4,
               color: AppColors.texte,
@@ -218,9 +218,9 @@ class _ModifierInformationsState extends State<ModifierInformations> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-              icon: const Icon(Icons.warning_amber_rounded,
+              icon: Icon(Icons.warning_amber_rounded,
                   size: 40, color: AppColors.nonEnregistreTexte),
-              title: const Text(
+              title: Text(
                 'Modifications non enregistrées',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -229,7 +229,7 @@ class _ModifierInformationsState extends State<ModifierInformations> {
                   color: AppColors.principal,
                 ),
               ),
-              content: const Text(
+              content: Text(
                 'Les champs modifiés n\'ont pas été enregistrés. '
                 'Voulez-vous quitter cette page sans les appliquer ?',
                 textAlign: TextAlign.center,
@@ -282,7 +282,7 @@ class _ModifierInformationsState extends State<ModifierInformations> {
           labelText: libelle,
           prefixIcon: Icon(icone),
           helperText: aide,
-          helperStyle: const TextStyle(fontSize: 12, color: AppColors.secondaire),
+          helperStyle: TextStyle(fontSize: 12, color: AppColors.secondaire),
           errorMaxLines: 3,
         ),
       ),
@@ -291,6 +291,9 @@ class _ModifierInformationsState extends State<ModifierInformations> {
 
   @override
   Widget build(BuildContext context) {
+    // US 2.4 : la palette suit le mode clair / sombre courant.
+    AppColors.suivreTheme(context);
+
     return Scaffold(
       backgroundColor: AppColors.fond,
       appBar: AppBar(
@@ -322,12 +325,12 @@ class _ModifierInformationsState extends State<ModifierInformations> {
                     color: AppColors.principalVoile,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Row(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Icon(Icons.info_outline,
                           size: 18, color: AppColors.principal),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           'Ces informations identifient votre profil auprès '
@@ -373,12 +376,12 @@ class _ModifierInformationsState extends State<ModifierInformations> {
                 ElevatedButton(
                   onPressed: _envoiEnCours ? null : _valider,
                   child: _envoiEnCours
-                      ? const SizedBox(
+                      ? SizedBox(
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.2,
-                            color: AppColors.blanc,
+                            color: AppColors.surAccent,
                           ),
                         )
                       : const Text('Valider les modifications'),

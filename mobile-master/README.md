@@ -42,6 +42,7 @@ La documentation du projet se trouve dans le dossier [`doc/`](doc/index.md) :
 - [`doc/api-et-donnees.md`](doc/api-et-donnees.md) — API mobile consommée, jeton Sanctum, modèles de données
 - [`doc/authentification.md`](doc/authentification.md) — connexion en deux étapes (identifiants puis code 2FA)
 - [`doc/rendez-vous-et-scan.md`](doc/rendez-vous-et-scan.md) — liste des rendez-vous, lecture du QR code
+- [`doc/lot3-attente-et-recurrence.md`](doc/lot3-attente-et-recurrence.md) — Lot 3 : liste d'attente et réservations récurrentes
 - [`doc/sfd-std.md`](doc/sfd-std.md) — dossier de spécifications SFD / STD (PDF : `doc/sfd-std.pdf`, génération : `bash doc/tools/build.sh`)
 
 ## Technologies 

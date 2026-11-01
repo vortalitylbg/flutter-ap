@@ -12,6 +12,7 @@ ResaChev est une plateforme open-source de réservation de créneaux. Ce dépôt
 | [api-et-donnees.md](api-et-donnees.md) | API mobile consommée, jetons Sanctum, modèles de données, mapping JSON |
 | [authentification.md](authentification.md) | Connexion en deux étapes (identifiants puis code 2FA), stockage du jeton |
 | [rendez-vous-et-scan.md](rendez-vous-et-scan.md) | Liste des rendez-vous, lecture du QR code, validation de présence |
+| [lot3-attente-et-recurrence.md](lot3-attente-et-recurrence.md) | Lot 3 : liste d'attente (US 3.1) et réservations récurrentes (US 3.2) — règles, impacts sur les trois applications, tests d'acceptation |
 | [sfd-std.md](sfd-std.md) | Document de présentation SFD / STD avec captures d'écran — PDF : `sfd-std.pdf`, génération : `bash doc/tools/build.sh` |
 
 ---
