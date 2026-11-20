@@ -16,6 +16,7 @@ class Reservation extends Model
         'datedebut',
         'heuredebut',
         'validationpresence',
+        'evaluation_invitee_at',
     ];
 
     protected function casts(): array
@@ -44,5 +45,14 @@ class Reservation extends Model
     public function prestation()
     {
         return $this->belongsTo(Prestation::class, 'idprestation', 'idprestation');
+    }
+
+    /**
+     * Retourne l'évaluation associée à cette réservation.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function evaluation()
+    {
+        return $this->hasOne(Evaluation::class, 'idreservation', 'idreservation');
     }
 }

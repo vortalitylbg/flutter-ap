@@ -31,4 +31,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/espace/profil', [EspaceController::class, 'profil'])->name('espace.profil');
     Route::post('/espace/profil', [EspaceController::class, 'updateProfil'])->name('espace.profil.update');
     Route::get('/espace/qrcode', [EspaceController::class, 'qrcode'])->name('espace.qrcode');
+    Route::post('/espace/evaluation', [EspaceController::class, 'evaluerReservation'])->name('espace.evaluation');
 });

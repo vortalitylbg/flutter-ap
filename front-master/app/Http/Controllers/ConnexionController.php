@@ -49,7 +49,7 @@ class ConnexionController extends Controller
         // TODO: Remplacer la comparaison directe par password_verify() pour comparer
         //   le mot de passe saisi avec le hash bcrypt stocké en base :
         //   if (!$utilisateur || !password_verify($request->motpasse, $utilisateur->motpasse))
-        if (!$utilisateur || $request->motpasse !== $utilisateur->motpasse) {
+        if (!$utilisateur || !password_verify($request->motpasse, $utilisateur->motpasse)) {
             // back() redirige vers la page précédente (le formulaire)
             // withInput() conserve les valeurs saisies pour les réafficher
             // withErrors() transmet les messages d'erreur à la vue
@@ -254,7 +254,7 @@ class ConnexionController extends Controller
         }
 
         $utilisateur->update([
-            'motpasse'               => $request->motpasse,
+            'motpasse'               => password_hash($request->motpasse, PASSWORD_BCRYPT),
             'reset_token'            => null,
             'reset_token_expires_at' => null,
         ]);

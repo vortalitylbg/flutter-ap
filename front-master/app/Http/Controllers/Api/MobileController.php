@@ -36,7 +36,7 @@ class MobileController extends Controller
         // TODO: Remplacer la comparaison directe par password_verify() pour comparer
         //   le mot de passe saisi avec le hash bcrypt stocké en base :
         //   if (!$utilisateur || !password_verify($request->motpasse, $utilisateur->motpasse))
-        if (!$utilisateur || $request->motpasse !== $utilisateur->motpasse) {
+        if (!$utilisateur || !password_verify($request->motpasse, $utilisateur->motpasse)) {
             // response()->json($data, $code) retourne une réponse JSON avec le code HTTP indiqué
             return response()->json([
                 'message' => 'Identifiants invalides ou accès non autorisé.',

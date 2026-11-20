@@ -109,4 +109,43 @@ class Utilisateur extends Authenticatable
             ->orderBy('datedebut')
             ->orderBy('heuredebut');
     }
+
+    public function niveau()
+    {
+        return $this->belongsTo(Niveau::class, 'idniveau', 'idniveau');
+    }
+
+    public function reservationsEvalables()
+    {
+        return $this->reservations()
+            ->where('validationpresence', 1)
+            ->whereDoesntHave('evaluation')
+            ->with('prestation')
+            ->orderByDesc('datedebut')
+            ->orderByDesc('heuredebut');
+    }
+
+    public function pointsFidelite(): int
+    {
+        return (int) $this->reservations()
+            ->where('validationpresence', 1)
+            ->count();
+    }
+
+    public function niveauFidelite(): array
+    {
+        $points = $this->pointsFidelite();
+
+        if ($points >= 10) {
+            return ['libelle' => 'Expert', 'suivant' => null, 'palier' => 10];
+        }
+        if ($points >= 6) {
+            return ['libelle' => 'Confirmé', 'suivant' => 10, 'palier' => 6];
+        }
+        if ($points >= 3) {
+            return ['libelle' => 'Intermédiaire', 'suivant' => 6, 'palier' => 3];
+        }
+
+        return ['libelle' => 'Débutant', 'suivant' => 3, 'palier' => 0];
+    }
 }

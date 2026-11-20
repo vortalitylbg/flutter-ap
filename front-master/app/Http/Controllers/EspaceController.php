@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Parametrage;
 use App\Models\Reservation;
+use App\Models\Evaluation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +23,14 @@ class EspaceController extends Controller
         // ->with('prestation') charge la relation en même temps (un seul aller-retour en base)
         // ->first() retourne le premier résultat, ou null si aucune réservation à venir
         $prochaineReservation = $utilisateur->prochaineReservation()->with('prestation')->first();
+        $reservationsAEvaluer = $utilisateur->reservationsEvalables()->get();
 
         return view('espace.dashboard', [
             'utilisateur'          => $utilisateur,
             'prochaineReservation' => $prochaineReservation,
+            'pointsFidelite'       => $utilisateur->pointsFidelite(),
+            'niveauFidelite'       => $utilisateur->niveauFidelite(),
+            'reservationsAEvaluer' => $reservationsAEvaluer,
         ]);
     }
 
@@ -239,7 +244,9 @@ class EspaceController extends Controller
         $utilisateur = Auth::user();
 
         return view('espace.profil', [
-            'utilisateur' => $utilisateur,
+            'utilisateur'    => $utilisateur,
+            'pointsFidelite' => $utilisateur->pointsFidelite(),
+            'niveauFidelite' => $utilisateur->niveauFidelite(),
         ]);
     }
 
@@ -277,5 +284,44 @@ class EspaceController extends Controller
             'utilisateur'          => $utilisateur,
             'prochaineReservation' => $prochaineReservation,
         ]);
+    }
+
+    /**
+     * Enregistre une évaluation pour une réservation.
+     */
+    public function evaluerReservation(Request $request)
+    {
+        $request->validate([
+            'idreservation' => 'required|integer',
+            'note' => 'required|integer|between:1,5',
+            'commentaire' => 'nullable|string|max:1000',
+        ], [
+            'note.required' => 'Choisissez une note entre 1 et 5 étoiles.',
+            'note.between' => 'La note doit être comprise entre 1 et 5 étoiles.',
+        ]);
+
+        $utilisateur = Auth::user();
+        $reservation = $utilisateur->reservations()
+            ->whereKey($request->idreservation)
+            ->where('validationpresence', 1)
+            ->whereDoesntHave('evaluation')
+            ->first();
+
+        if (!$reservation) {
+            return back()->withErrors([
+                'evaluation' => 'Cette réservation ne peut pas être évaluée.',
+            ]);
+        }
+
+        Evaluation::create([
+            'idreservation' => $reservation->idreservation,
+            'note' => $request->note,
+            'commentaire' => $request->commentaire,
+            'dateevaluation' => now(),
+        ]);
+
+        $reservation->update(['evaluation_invitee_at' => now()]);
+
+        return back()->with('statut', 'Merci pour votre évaluation !');
     }
 }
